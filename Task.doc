@@ -1,0 +1,113 @@
+100 Days Of Coding Challenge!
+
+Day-79 Task:
+Read the following Articles with interactive video about Basics of Authentication and HTTP Basic Authentication.
+
+Basics of Authentication https://roadmap.sh/guides/basics-of-authentication
+
+HTTP Basic Authentication https://roadmap.sh/guides/http-basic-authentication
+
+//------------------------------------------------------------------------------------------------------------------
+
+Basics of Authentication (https://roadmap.sh/guides/basics-of-authentication) video: (https://youtu.be/Mcyt9SrZT6g)
+
+    * Overview: The article introduces the concept of authentication, which is the process of verifying the identity of a user or system.
+    It is a foundational part of security and plays a crucial role in ensuring that only authorized users can access sensitive data or systems.
+
+    What is Authentication?
+    Authentication is the process of verifying a user's identity to ensure they are who they claim to be before granting access to a system or resource.
+
+    * How Does Authentication Work?
+    The user typically provides credentials (e.g., username and password), which are compared to a stored database to verify identity.
+    If the credentials match, access is granted.
+
+    * Multifactor Authentication (MFA)
+    MFA adds an extra layer of security by requiring multiple forms of verification, such as a password and a second factor like a text code,
+    security token, or biometric scan.
+
+    * Two-Factor Authentication (2FA)
+    A form of MFA that specifically uses two factors for authentication: something you know (password) and something you have (like a mobile device for OTP).
+
+    * What is Authorization?
+    Authorization is different from authentication. After verifying identity (authentication),
+    authorization determines what actions or resources the authenticated user is allowed to access.
+
+    * Authentication Strategies
+    The video and article outline various strategies for authentication, including Single-Factor Authentication (SFA), MFA, and using modern protocols
+    like OAuth and OpenID Connect, which are essential for secure web and mobile app authentication.
+
+        * Password-Based Authentication: The most common method, requiring a username and password.
+
+        * Token-Based Authentication: Involves tokens (like JWT) that are generated after a user successfully logs in.
+
+        * Biometric Authentication: Uses fingerprint, facial recognition, or other biometric data.
+
+        * Multi-Factor Authentication (MFA): Requires multiple forms of verification.
+
+    //-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+HTTP Basic Authentication (https://roadmap.sh/guides/http-basic-authentication) video: (https://youtu.be/mwccHwUn7Gc)
+
+    * Overview: HTTP Basic Authentication is a method for transmitting user credentials (username and password) to a web server as part of the HTTP protocol.
+    It’s a simple and widely supported mechanism, but it has some security weaknesses.
+
+    * What is Basic Authentication?
+    HTTP Basic Authentication is a simple method where the client sends the username and password encoded in base64 in the request header,
+    allowing the server to authenticate the user.
+
+    * How Does It Work?
+
+        * The server responds to a client request with a 401 (Unauthorized) status and includes a WWW-Authenticate header to prompt the user to send credentials.
+        * The client resends the request with an Authorization header containing the base64-encoded credentials (e.g., username:password).
+        * Upon receiving the credentials, the server verifies them and grants access if they are valid.
+
+    * Basic Authentication in Node.js
+    The video explains how to implement HTTP Basic Authentication in a Node.js application. It demonstrates how to:
+
+        * Set up an Express.js server.
+        * Use middleware to handle Authorization headers.
+        * Decode base64-encoded credentials to validate the user.
+
+    * Security Concerns
+    The article and video emphasize that HTTP Basic Authentication transmits credentials in an insecure way unless HTTPS is used,
+    since base64 encoding is easily reversible. Always using HTTPS for basic authentication is recommended to ensure the credentials are encrypted during transmission.
+
+Example in Node.js Here's a simple example using Express.js to implement HTTP Basic Authentication:
+
+
+const express = require('express');
+const app = express();
+
+app.use((req, res, next) => {
+    const auth = req.headers['authorization'];
+    if (!auth) {
+        res.setHeader('WWW-Authenticate', 'Basic realm="example"');
+        return res.status(401).send('Unauthorized');
+    }
+    const credentials = Buffer.from(auth.split(' ')[1], 'base64').toString().split(':');
+    const [username, password] = credentials;
+    if (username === 'user' && password === 'pass') {
+        next();
+    } else {
+        res.status(401).send('Unauthorized');
+    }
+});
+
+app.get('/', (req, res) => {
+    res.send('Hello, authenticated user!');
+});
+
+app.listen(3000, () => {
+    console.log('Server running on port 3000');
+});
+
+
+Understanding these authentication mechanisms is essential for building secure web applications.
+They help ensure that only authorized users can access sensitive information and functionalities.
+
+Comclusion:
+
+In summary, the Basics of Authentication article and video provide a broad overview of authentication methods,
+including how they work, types like MFA and 2FA, and distinctions between authentication and authorization.
+The HTTP Basic Authentication article and video dive into a specific, simpler method of authentication, explaining how it operates,
+its security risks, and how to implement it in Node.js.    
